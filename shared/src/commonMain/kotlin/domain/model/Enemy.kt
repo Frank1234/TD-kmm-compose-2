@@ -1,10 +1,8 @@
 package domain.model
 
-import com.example.kotlinmultiplatformmobiletest.game.gameRandom
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileHeightHalf
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileWidthHalf
-import domain.model.getDirectionMultiplierX
-import domain.model.getDirectionMultiplierY
+import domain.game.gameRandom
+import domain.model.GameSizeSpecs.tileHeightHalf
+import domain.model.GameSizeSpecs.tileWidthHalf
 import kotlin.math.max
 
 data class EnemyId(val id: Long)

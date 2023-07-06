@@ -58,8 +58,12 @@ kotlin {
 
                 // fix of Could not find "shared/build/kotlinTransformedMetadataLibraries/commonMain/org.jetbrains.kotlinx-atomicfu-0.17.3-nativeInterop-8G5yng.klib"
                 implementation("org.jetbrains.kotlinx:atomicfu:0.17.3")
+
+                val napierVersion = "2.6.1"
+                implementation("io.github.aakira:napier:$napierVersion")
             }
         }
+
         val androidMain by getting {
             dependencies {
                 api("androidx.activity:activity-compose:1.6.1")

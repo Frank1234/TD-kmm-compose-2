@@ -1,23 +1,24 @@
 package domain.game
 
-import com.example.kotlinmultiplatformmobiletest.Cancellable
-import com.example.kotlinmultiplatformmobiletest.game.EventHandler.TowerHandler.constructOrUpdateTower
-import com.example.kotlinmultiplatformmobiletest.game.EventHandler.TowerHandler.selectTower
-import com.example.kotlinmultiplatformmobiletest.game.EventHandler.clearSelection
-import com.example.kotlinmultiplatformmobiletest.game.model.Enemy
-import com.example.kotlinmultiplatformmobiletest.game.model.Event
-import com.example.kotlinmultiplatformmobiletest.game.model.Game
-import com.example.kotlinmultiplatformmobiletest.game.model.GameState
-import com.example.kotlinmultiplatformmobiletest.game.model.Roads
-import com.example.kotlinmultiplatformmobiletest.game.model.ToastMessage
-import com.example.kotlinmultiplatformmobiletest.game.model.ToastMessageSpecs
-import com.example.kotlinmultiplatformmobiletest.game.model.Tower
-import com.example.kotlinmultiplatformmobiletest.game.model.TowerType
-import com.example.kotlinmultiplatformmobiletest.game.model.didReachFinishTile
-import com.example.kotlinmultiplatformmobiletest.game.model.getConstructionButtonAlpha
-import com.example.kotlinmultiplatformmobiletest.game.model.isInRange
-import com.example.kotlinmultiplatformmobiletest.game.model.removeEnemies
-import com.example.kotlinmultiplatformmobiletest.game.model.toNextWave
+import domain.common.Cancellable
+import domain.common.collect2
+import domain.game.EventHandler.TowerHandler.constructOrUpdateTower
+import domain.game.EventHandler.TowerHandler.selectTower
+import domain.game.EventHandler.clearSelection
+import domain.model.Enemy
+import domain.model.Event
+import domain.model.Game
+import domain.model.GameState
+import domain.model.Roads
+import domain.model.ToastMessage
+import domain.model.ToastMessageSpecs
+import domain.model.Tower
+import domain.model.TowerType
+import domain.model.didReachFinishTile
+import domain.model.getConstructionButtonAlpha
+import domain.model.isInRange
+import domain.model.removeEnemies
+import domain.model.toNextWave
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +54,7 @@ class GameLoop() {
     // Wrapper function for Swift
     // https://betterprogramming.pub/using-kotlin-flow-in-swift-3e7b53f559b6
     fun gameFlowiOS(onEach: (Game?) -> Unit, onCompletion: (Throwable?) -> Unit): Cancellable =
-        gameFlow.collect(onEach, onCompletion)
+        gameFlow.collect2(onEach, onCompletion)
 
     private fun getInitialLastSpawnTime(): Long = getCurrentTimeMs() + initialGameStartupDelay
 
