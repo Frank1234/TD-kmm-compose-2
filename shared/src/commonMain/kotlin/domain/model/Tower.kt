@@ -1,5 +1,7 @@
 package domain.model
 
+import com.myapplication.common.MR
+import dev.icerock.moko.resources.ImageResource
 import domain.game.gameRandom
 
 data class TowerId(val id: Long)
@@ -54,10 +56,10 @@ fun Tower.getConstructIconPainterRes() =
         }
     }
 
-fun Tower.getBulletPainterRes(): String =
+fun Tower.getBulletPainterRes(): ImageResource =
     when (this.level) {
-        is TowerLevel.One -> "shoot_arrow_level_1"
-        is TowerLevel.Two -> "shoot_arrow_level_2"
+        is TowerLevel.One -> MR.images.shoot_arrow_level_1
+        is TowerLevel.Two -> MR.images.shoot_arrow_level_2
     }
 
 sealed class TowerLevel {
@@ -111,13 +113,13 @@ fun Tower.isInRange(enemy: Enemy): Boolean {
     return locationsInRange.contains(enemy.stepTargetLocation)
 }
 
-fun Tower.getDrawableResId(): String =
+fun Tower.getDrawableResId(): ImageResource =
     when (this.type) {
-        is TowerType.Empty -> "tower_empty"
+        is TowerType.Empty -> MR.images.tower_empty
         is TowerType.Archer -> {
             when (this.level) {
-                TowerLevel.One -> "tower_archer_level_one"
-                TowerLevel.Two -> "tower_archer_level_two"
+                TowerLevel.One -> MR.images.tower_archer_level_one
+                TowerLevel.Two -> MR.images.tower_archer_level_two
             }
         }
     }

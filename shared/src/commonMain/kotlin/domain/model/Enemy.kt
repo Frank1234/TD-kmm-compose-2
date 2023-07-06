@@ -1,5 +1,7 @@
 package domain.model
 
+import com.myapplication.common.MR
+import dev.icerock.moko.resources.ImageResource
 import domain.game.gameRandom
 import domain.model.GameSizeSpecs.tileHeightHalf
 import domain.model.GameSizeSpecs.tileWidthHalf
@@ -118,8 +120,8 @@ fun Enemy.getRelativeScreenCoordinates(pivotPointIsTopLeft: Boolean = true): Scr
 fun Enemy.didReachFinishTile(roads: Roads): Boolean =
     locationTile == roads.value.last().locationTile
 
-fun Enemy.getDrawableResId(): String =
+fun Enemy.getDrawableResId(): ImageResource =
     when (this.type) {
-        EnemyType.Ogre -> "enemy_ogre"
-        EnemyType.Orc -> "enemy_orc"
+        EnemyType.Ogre -> MR.images.enemy_ogre
+        EnemyType.Orc -> MR.images.enemy_orc
     }

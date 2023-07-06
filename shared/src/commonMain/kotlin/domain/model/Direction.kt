@@ -1,5 +1,7 @@
 package domain.model
 
+import com.myapplication.common.MR
+import dev.icerock.moko.resources.ImageResource
 import domain.game.gameRandom
 
 val movementDirections = listOf(Direction.NorthEast, Direction.NorthWest, Direction.SouthEast, Direction.SouthWest)
@@ -30,16 +32,16 @@ data class Decoration(
 ) : LocationTileOccupant
 
 // strings are used to be able to use this method on both platforms
-fun Decoration.getDrawableResId() : String =
+fun Decoration.getDrawableResId(): ImageResource =
     when (this.type) {
-        DecorationType.Barrels -> "deco_barrels"
-        DecorationType.BushOne -> "deco_bush_1"
-        DecorationType.BushThree -> "deco_bush_2"
-        DecorationType.BushTwo -> "deco_bush_3"
-        DecorationType.StoneOne -> "deco_stone_1"
-        DecorationType.StoneTwo -> "deco_stone_2"
-        DecorationType.TreesPine -> "deco_trees_pine"
-        DecorationType.TreesRound -> "deco_trees_round"
+        DecorationType.Barrels -> MR.images.deco_barrels
+        DecorationType.BushOne -> MR.images.deco_bush_1
+        DecorationType.BushThree -> MR.images.deco_bush_2
+        DecorationType.BushTwo -> MR.images.deco_bush_3
+        DecorationType.StoneOne -> MR.images.deco_stone_1
+        DecorationType.StoneTwo -> MR.images.deco_stone_2
+        DecorationType.TreesPine -> MR.images.deco_trees_pine
+        DecorationType.TreesRound -> MR.images.deco_trees_round
     }
 
 sealed class DecorationType {
@@ -56,8 +58,10 @@ sealed class DecorationType {
 fun Direction.getDirectionMultiplierY() = when (this) {
     Direction.NorthEast,
     Direction.NorthWest -> -1
+
     Direction.SouthEast,
     Direction.SouthWest -> 1
+
     Direction.East,
     Direction.North,
     Direction.South,
@@ -67,8 +71,10 @@ fun Direction.getDirectionMultiplierY() = when (this) {
 fun Direction.getDirectionMultiplierX() = when (this) {
     Direction.NorthEast,
     Direction.SouthEast -> 1
+
     Direction.NorthWest,
     Direction.SouthWest -> -1
+
     Direction.East,
     Direction.North,
     Direction.South,

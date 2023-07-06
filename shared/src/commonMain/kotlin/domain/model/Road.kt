@@ -1,5 +1,7 @@
 package domain.model
 
+import com.myapplication.common.MR
+import dev.icerock.moko.resources.ImageResource
 import domain.game.gameRandom
 
 data class Roads(val value: List<Road>)
@@ -10,14 +12,14 @@ data class Road(
 ) : LocationTileOccupant
 
 // strings are used to be able to use this method on both platforms
-fun RoadDirectionType.getDrawableResId(): String =
+fun RoadDirectionType.getDrawableResId(): ImageResource =
     when (this) {
-        RoadDirectionType.NorthEastToNorthWest -> "road_nenw"
-        RoadDirectionType.NorthWestToSouthEast -> "road_nwse"
-        RoadDirectionType.SouthWestToNorthEast -> "road_swne"
-        RoadDirectionType.SouthWestToSouthEast -> "road_swse"
-        RoadDirectionType.NorthEastToSouthEast -> "road_nese"
-        RoadDirectionType.NorthWestToSouthWest -> "road_nwsw"
+        RoadDirectionType.NorthEastToNorthWest -> MR.images.road_nenw
+        RoadDirectionType.NorthWestToSouthEast -> MR.images.road_nwse
+        RoadDirectionType.SouthWestToNorthEast -> MR.images.road_swne
+        RoadDirectionType.SouthWestToSouthEast -> MR.images.road_swse
+        RoadDirectionType.NorthWestToSouthWest -> MR.images.road_nwsw
+        RoadDirectionType.NorthEastToSouthEast -> MR.images.road_nese
     }
 
 sealed class RoadDirectionType {
