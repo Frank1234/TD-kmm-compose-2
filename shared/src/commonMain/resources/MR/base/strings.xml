@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello_world">Hello moko-resources World</string>
+    <string name="app_name">KMM Tower Defense</string>
+    <string name="message_you_lost">You Lost!</string>
+    <string name="message_you_won">You won!</string>
+    <string name="wave_counter_message">Wave %s/%s</string>
+    <string name="menu_title">Menu</string>
+    <string name="message_not_enough_funds">Not enough coins!</string>
+    <string name="message_wave_x_starts">Wave %s has started!</string>
+    <string name="message_wave_first_starts">Get ready to play!</string>
+    <string name="message_wave_last_starts">FINAL wave has started!</string>
 </resources>
