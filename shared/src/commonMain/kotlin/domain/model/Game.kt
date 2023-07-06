@@ -1,7 +1,6 @@
 package domain.model
 
-import com.example.kotlinmultiplatformmobiletest.game.zoomLevel
-import domain.model.Decoration
+import domain.game.zoomLevel
 import kotlin.math.min
 
 object GameSizeSpecs {

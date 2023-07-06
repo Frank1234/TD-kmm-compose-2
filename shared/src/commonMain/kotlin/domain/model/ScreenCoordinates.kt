@@ -1,9 +1,9 @@
 package domain.model
 
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileHeight
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileHeightHalf
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileWidth
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.tileWidthHalf
+import domain.model.GameSizeSpecs.tileHeight
+import domain.model.GameSizeSpecs.tileHeightHalf
+import domain.model.GameSizeSpecs.tileWidth
+import domain.model.GameSizeSpecs.tileWidthHalf
 
 data class ScreenCoordinates(
     val x: Double,

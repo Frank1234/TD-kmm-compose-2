@@ -1,6 +1,6 @@
 package domain.model
 
-import com.example.kotlinmultiplatformmobiletest.game.getCurrentTimeMs
+import domain.game.getCurrentTimeMs
 
 private const val DISPLAY_DURATION_SHORT = 1200L
 private const val DISPLAY_DURATION_LONG = 3000L
@@ -18,6 +18,6 @@ sealed class ToastMessageSpecs(val displayDurationMs: Long, val displayType: Toa
 }
 
 sealed class ToastMessageDisplayType {
-    object Small: ToastMessageDisplayType()
-    object Large: ToastMessageDisplayType()
+    object Small : ToastMessageDisplayType()
+    object Large : ToastMessageDisplayType()
 }

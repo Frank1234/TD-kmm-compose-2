@@ -1,12 +1,7 @@
 package domain.model
 
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.gameHeightTiles
-import com.example.kotlinmultiplatformmobiletest.game.model.GameSizeSpecs.gameWidthTiles
-import domain.model.Decoration
-import domain.model.DecorationType
-import domain.model.Direction
-import domain.model.movementDirections
-import domain.model.shootingDirections
+import domain.model.GameSizeSpecs.gameHeightTiles
+import domain.model.GameSizeSpecs.gameWidthTiles
 
 /**
  * [x] and [y] are tile indexes.
@@ -51,6 +46,7 @@ fun LocationTileOccupant.getZAxisFraction(): Float =
             TowerType.Archer -> 1.22f
             TowerType.Empty -> .138f
         }
+
         is Decoration -> when (type) {
             DecorationType.TreesPine -> .63f
             DecorationType.TreesRound -> .53f
@@ -61,6 +57,7 @@ fun LocationTileOccupant.getZAxisFraction(): Float =
             DecorationType.StoneOne,
             DecorationType.StoneTwo -> .0f
         }
+
         else -> 0f
     }
 
