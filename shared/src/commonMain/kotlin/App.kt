@@ -12,10 +12,9 @@ private val gameLoop: GameLoop = GameLoop()
 @Composable
 fun App() {
 
-    Napier.base(DebugAntilog())
-
     LaunchedEffect(Unit) {
         gameLoop.start()
+        Napier.base(DebugAntilog())
     }
 
     val onEvent = { event: Event ->
@@ -27,6 +26,7 @@ fun App() {
     }
 
     val game = gameLoop.gameFlow.collectAsState()
+
     game.value?.let { GameView(it, onEvent) }
 }
 

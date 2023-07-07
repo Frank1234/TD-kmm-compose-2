@@ -1,7 +1,5 @@
 package domain.game
 
-import domain.common.Cancellable
-import domain.common.collect2
 import domain.game.EventHandler.TowerHandler.constructOrUpdateTower
 import domain.game.EventHandler.TowerHandler.selectTower
 import domain.game.EventHandler.clearSelection
@@ -24,9 +22,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 import kotlin.time.ExperimentalTime
@@ -35,12 +36,12 @@ import kotlin.time.measureTime
 const val zoomLevel = 0.8
 const val gameSpeed = 0.7 // for easy tweaking. higher is faster
 
-const val updatesPerSecond = 60
-const val loopCycleLengthMs = 1000 / updatesPerSecond
+const val updatesPerSecond = 20.0
+const val loopCycleLengthMs = 1000.0 / updatesPerSecond
 const val enemyMovementPerCycle = (1.0 / updatesPerSecond) * gameSpeed
 const val bulletMovementPerCycle = (2.3 / updatesPerSecond) * gameSpeed
 const val spawnEnemiesDelayMs = 1000 * (1.0 / gameSpeed) // in between spawns inside a wave
-const val initialGameStartupDelay = 2100 // go give the user a bit of time to look at the map
+const val initialGameStartupDelay = 2100.0 // go give the user a bit of time to look at the map
 
 val gameRandom = Random(getCurrentTimeMs())
 
@@ -48,25 +49,33 @@ class GameLoop() {
 
     private val scope: CoroutineScope = GlobalScope
 
-    val gameFlow: MutableStateFlow<Game?> = MutableStateFlow(null)
+    val gameFlow: StateFlow<Game?> get() = _gameFlow
+    private val _gameFlow: MutableStateFlow<Game?> = MutableStateFlow(null)
     private var lastSpawnTimeMs: Long = getInitialLastSpawnTime()
 
     // Wrapper function for Swift
     // https://betterprogramming.pub/using-kotlin-flow-in-swift-3e7b53f559b6
-    fun gameFlowiOS(onEach: (Game?) -> Unit, onCompletion: (Throwable?) -> Unit): Cancellable =
-        gameFlow.collect2(onEach, onCompletion)
+    // fun gameFlowiOS(onEach: (Game?) -> Unit, onCompletion: (Throwable?) -> Unit): Cancellable =
+    //     gameFlow.collect2(onEach, onCompletion)
 
-    private fun getInitialLastSpawnTime(): Long = getCurrentTimeMs() + initialGameStartupDelay
+    private fun getInitialLastSpawnTime(): Long = getCurrentTimeMs() + initialGameStartupDelay.toLong()
 
     // TODO is this threadsafe? no
     private var lastEvent: Event? = null // TODO do we need a list?
     private var loopJob: Job? = null
 
     fun start() {
-        gameFlow.update { _ -> generateGame() }
+        Napier.d { "Starting gameloop" }
+        _gameFlow.update { _ -> generateGame() }
         lastSpawnTimeMs = getInitialLastSpawnTime()
         loopJob = scope.launch(Dispatchers.Default) {
-            run()
+            while (isActive) {
+                if (_gameFlow.value?.state?.isEndState == true || !isActive) {
+                    stop()
+                    if (isActive) cancel() // end the loop
+                }
+                run()
+            }
         }
     }
 
@@ -81,15 +90,10 @@ class GameLoop() {
     }
 
     @OptIn(ExperimentalTime::class)
-    private tailrec suspend fun run() {
-
-        if (gameFlow.value?.state?.isEndState == true || loopJob?.isActive == false) {
-            stop()
-            return // end the loop
-        }
+    private suspend fun run() {
 
         val thisLoopsTime = measureTime {
-            gameFlow.update { lastGame -> if (lastGame != null) updateGame(lastGame) else null }
+            _gameFlow.update { lastGame -> if (lastGame != null) updateGame(lastGame) else null }
         }
         val timeToDelayMs = loopCycleLengthMs - thisLoopsTime.inWholeMilliseconds
         if (timeToDelayMs > 0) {
@@ -97,9 +101,8 @@ class GameLoop() {
             delay(timeToDelayMs.toLong())
         } else {
             // TODO handle better? read up
-            Napier.e { "Game loop cycle too long (is ${thisLoopsTime.inWholeMilliseconds} ms)!! timeToDelay: $timeToDelayMs ms (loopLengthMs $loopCycleLengthMs)" }
+            Napier.e { "Game loop cycle too long (is ${thisLoopsTime} ms)!! timeToDelay: $timeToDelayMs ms (loopLengthMs $loopCycleLengthMs)" }
         }
-        return run()
     }
 
     private fun handleEvents(incomingGame: Game): Game {
@@ -119,7 +122,7 @@ class GameLoop() {
         return game
     }
 
-    private fun updateGame(incomingGame: Game): Game {
+    private suspend fun updateGame(incomingGame: Game): Game {
 
         val currentTimeMs = getCurrentTimeMs()
 
