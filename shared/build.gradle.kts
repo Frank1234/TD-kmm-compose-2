@@ -70,6 +70,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.9.0")
             }
+            dependsOn(commonMain) // https://github.com/icerockdev/moko-resources/issues/531
         }
         val iosX64Main by getting
         val iosArm64Main by getting
